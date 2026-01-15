@@ -2,6 +2,10 @@
 
 This repository demonstrates how to integrate MCP Apps with CopilotKit. It uses the [Three.js example](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples/threejs-server) from the official Model Context Protocol organization on GitHub.
 
+
+https://github.com/user-attachments/assets/8908af31-2b64-4426-9c83-c51ab86256de
+
+
 ## Prerequisites
 
 - Node.js 20+ 
