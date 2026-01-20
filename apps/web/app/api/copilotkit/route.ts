@@ -7,35 +7,43 @@ import { BuiltInAgent } from "@copilotkit/runtime/v2";
 import { NextRequest } from "next/server";
 import { MCPAppsMiddleware } from "@ag-ui/mcp-apps-middleware";
 
-const middleware = new MCPAppsMiddleware({
-  mcpServers: [
-    {
-      type: "http",
-      url: "http://localhost:3108/mcp",
-      serverId: "threejs" // Recommended: stable identifier
-    },
-  ],
-});
+// 1. Define the agent middleware
+const middlewares = [
+  // 1.1. MCP Apps Middleware
+  new MCPAppsMiddleware({
+    mcpServers: [
+      {
+        type: "http",
+        url: "http://localhost:3108/mcp",
+        serverId: "threejs" // Recommended: stable identifier
+      },
+    ],
+  }),
+  // 1.2. More middlewares can be added here
+]
 
+// 2. Create the agent
 const agent = new BuiltInAgent({
   model: "openai/gpt-4o",
   prompt: "You are a helpful assistant.",
 })
-  .use(middleware);
 
-// 1. You can use any service adapter here for multi-agent support. We use
-//    the empty adapter since we're only using one agent.
+// 3. Apply the middleware to the agent
+for (const middleware of middlewares) {
+  agent.use(middleware)
+}
+
+// 4. Create the service adapter, empty if not relevant
 const serviceAdapter = new ExperimentalEmptyAdapter();
 
-// 2. Create the CopilotRuntime instance and utilize the LangGraph AG-UI
-//    integration to setup the connection.
+// 5. Create the runtime
 const runtime = new CopilotRuntime({
   agents: {
     default: agent,
   },
 });
 
-// 3. Build a Next.js API route that handles the CopilotKit runtime requests.
+// 6. Create the API route
 export const POST = async (req: NextRequest) => {
   const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
     runtime,
