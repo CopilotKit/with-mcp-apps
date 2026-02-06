@@ -11,13 +11,14 @@
   },
   "dependencies": {
     "@ag-ui/mcp-apps-middleware": "^0.0.3",
-    "@copilotkit/react-core": "1.51.3",
-    "@copilotkit/react-ui": "1.51.3",
-    "@copilotkit/runtime": "1.51.3",
+    "@copilotkit/react-core": "next",
+    "@copilotkit/react-ui": "next",
+    "@copilotkit/runtime": "next",
     "dotenv": "^17.2.3",
     "next": "16.1.1",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

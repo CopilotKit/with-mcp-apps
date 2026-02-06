@@ -1,45 +1,32 @@
 import {
   CopilotRuntime,
-  ExperimentalEmptyAdapter,
   copilotRuntimeNextJSAppRouterEndpoint,
+  ExperimentalEmptyAdapter,
 } from "@copilotkit/runtime";
 import { BuiltInAgent } from "@copilotkit/runtime/v2";
 import { NextRequest } from "next/server";
-import { MCPAppsMiddleware } from "@ag-ui/mcp-apps-middleware";
 
-// 1. Define the agent middleware
-const middlewares = [
-  // 1.1. MCP Apps Middleware
-  new MCPAppsMiddleware({
-    mcpServers: [
-      {
-        type: "http",
-        url: "http://localhost:3108/mcp",
-        serverId: "threejs" // Recommended: stable identifier
-      },
-    ],
-  }),
-  // 1.2. More middlewares can be added here
-]
-
-// 2. Create the agent
-const agent = new BuiltInAgent({
+// 1. Create the agents
+const supervisor = new BuiltInAgent({
   model: "openai/gpt-4o",
-  prompt: "You are a helpful assistant.",
+  prompt: "Your name is Bob. You are a leader, delegate.",
 })
-
-// 3. Apply the middleware to the agent
-for (const middleware of middlewares) {
-  agent.use(middleware)
-}
-
-// 4. Create the service adapter, empty if not relevant
-const serviceAdapter = new ExperimentalEmptyAdapter();
+const finance = new BuiltInAgent({
+  model: "openai/gpt-4o",
+  prompt: "Your name is Sally. You are a finance expert. There is $4000 to be spent.",
+})
+const pirate = new BuiltInAgent({
+  model: "openai/gpt-4o",
+  prompt: "Your name is Roger. Talk like a pirate",
+})
 
 // 5. Create the runtime
 const runtime = new CopilotRuntime({
+  // @ts-ignore
   agents: {
-    default: agent,
+    default: supervisor,
+    pirate,
+    finance,
   },
 });
 
@@ -47,7 +34,7 @@ const runtime = new CopilotRuntime({
 export const POST = async (req: NextRequest) => {
   const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
     runtime,
-    serviceAdapter,
+    serviceAdapter: new ExperimentalEmptyAdapter(),
     endpoint: "/api/copilotkit",
   });
 
