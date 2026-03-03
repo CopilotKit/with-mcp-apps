@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@ag-ui/mcp-apps-middleware": "^0.0.3",
-    "@copilotkit/react-core": "1.51.3",
-    "@copilotkit/react-ui": "1.51.3",
-    "@copilotkit/runtime": "1.51.3",
+    "@copilotkit/react-core": "1.52.1",
+    "@copilotkit/react-ui": "1.52.1",
+    "@copilotkit/runtime": "1.52.1",
     "dotenv": "^17.2.3",
     "next": "16.1.1",
     "react": "^19.2.3",
